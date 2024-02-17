@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nazario | Assignment 4</title>
+</head>
+<body>
+    <nav>
+        <div class="navbar__conatiner">
+            <h1 id="header"><a href="index.html">Welcome to Joe's Hotdog Stand</a></h1>
+        </div>
+    </nav>
+
+    <div class="error" id="error">
+
+    </div>
+
+    <div class="receipt__container" id="receipt">
+        <div class="left--side" id="left">
+
+        </div>
+        <div class="right--side" id="right">
+
+        </div>
+    </div>
+    <script language="javascript">
+
+        const hotdogs = 4.65;
+        const frenchfries = 3.75;
+        const drinks = 1.89;
+        var discount = .1;
+        var tax = .0625;
+
+        const numDogs = prompt('How many Hotdogs?', 0);
+        const numFries = prompt('How many French Fries?', 0);
+        const numSoda = prompt('How many Sodas?', 0);
+
+        // key function
+        function showMoney(value) {
+            const change = Math.floor((value + 0.005) * 100) / 100;
+            const pricestring = change.toString();
+
+            if (pricestring.indexOf(".") === -1) {
+                return "$" + pricestring + ".00";
+            }
+            if (pricestring.length - pricestring.indexOf(".") === 2) {
+                return "$" + pricestring + "0";
+            } 
+            if (pricestring.length - pricestring.indexOf(".") === 3) {
+                return "$" + pricestring;
+            } 
+            if (pricestring.indexOf(".") === 0 && pricestring.length === 2) {
+                return "$0" + pricestring + "0";
+            } 
+            if (pricestring.indexOf(".") === 0 && pricestring.length === 3) {
+                return "$0" + pricestring;
+            } 
+        }
+
+        // checks for valid input 
+        if (numDogs < 0 || numFries < 0 || numSoda < 0) {
+            var main = document.getElementById('error')
+            alert('ERROR: invalid input for one or more responses.');
+            main.innerHTML += '<h1>ERROR: LOADING RECEIPT INFO <br></h3>';
+            main.innerHTML += '<h2>Refresh your page to create an order</h4>';
+        } else {
+            const subtotalBeforeDiscount = (numDogs * hotdogs) + (numFries * frenchfries) + (numSoda * drinks);
+            var subtotalAfterDiscount, finalTotal;
+
+            if (subtotalBeforeDiscount >= 25) {
+                discount *= subtotalBeforeDiscount;
+                subtotalAfterDiscount = subtotalBeforeDiscount - discount;
+                tax *= subtotalAfterDiscount;
+                finalTotal = subtotalAfterDiscount + tax;
+            } 
+            else {
+                discount = 0;
+                subtotalAfterDiscount = subtotalBeforeDiscount;
+                tax = subtotalAfterDiscount * tax;
+                finalTotal = subtotalAfterDiscount + tax;
+            }
+            document.body.style.color = "blue";
+            var lefty = document.getElementById('left');
+            var righty = document.getElementById('right');
+            lefty.innerHTML += '<p class="test"> Hotdog(s):</p>';
+            lefty.innerHTML += '<p class="test"> French Fries:</p>';
+            lefty.innerHTML += '<p class="test"> Soda(s):</p>';
+            lefty.innerHTML += '<p class="test"> Subtotal before Discount::</p>';
+            lefty.innerHTML += '<p class="test"> Discount:</p>';
+            lefty.innerHTML += '<p class="test"> Subtotal after Discount:</p>';
+            lefty.innerHTML += '<p class="test"> State Tax (6.25%):</p>';
+            lefty.innerHTML += '<hr>';
+            lefty.innerHTML += '<p class="test"> Final Total:</p>';
+
+            righty.innerHTML += `<p class="test"> ${numDogs} x $${hotdogs} </p>`;
+            righty.innerHTML += `<p class="test"> ${numFries} x $${frenchfries} </p>`;
+            righty.innerHTML += `<p class="test"> ${numSoda} x $${drinks} </p>`;
+            righty.innerHTML += `<p class="test"> ${showMoney(subtotalBeforeDiscount)} </p>`;
+            righty.innerHTML += `<p class="test"> ${showMoney(discount)} </p>`;
+            righty.innerHTML += `<p class="test"> ${showMoney(subtotalAfterDiscount)} </p>`;
+            righty.innerHTML += `<p class="test"> ${showMoney(tax)} </p>`;
+            righty.innerHTML += '<hr>';
+            righty.innerHTML += `<p class="test"> ${showMoney(finalTotal)} </p>`;
+        }
+        
+    </script>
+    <style>
+        body {
+            background-color: grey;
+        }
+
+        .receipt__container {
+            background-color: whitesmoke;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        #left {
+            padding: 120px 15px;
+            margin: 10px auto;
+            width: auto;        
+        }
+
+        #right {
+            padding: 120px 15px;
+            margin: 10px auto;
+            width: auto;
+            justify-content: right;
+            text-align: right;
+        }
+
+
+        p {
+            color: black;
+            font-size: 1.25rem;
+        }
+
+
+        nav {
+            display: flex;
+            background-color: yellow;
+            height: 65px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0 0 1 rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar__container {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        #header a {
+            text-decoration: none;
+            color: black;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        #final {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media screen and (max-width: 960px) {
+            .navbar__container {
+                height: 50px;
+                width: 100%;
+                padding: 0;
+            }
+
+            .receipt__container {
+                width: auto;
+            }
+
+            #header a {
+                font-size: 1.25rem;
+            }
+
+            p {
+                font-size: 1.12rem;
+            }
+        }
+
+        @media screen and (max-width:798px) {
+            .receipt__container {
+                align-items: center;
+                justify-content: center;
+                margin: 20px auto;
+            }
+        }
+        @media screen and (max-width:600px){
+            #header a {
+                font-size: 1.12rem;
+            }
+
+            p {
+                font-size: .85rem;
+            }
+        }
+    </style>
+</body>
+</html>
